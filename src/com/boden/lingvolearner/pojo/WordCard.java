@@ -40,4 +40,9 @@ public class WordCard {
 		this.translation = translation;
 	}
 
+	@Override
+	public String toString() {
+		return "&nbsp;&nbsp;&nbsp;<b>" + word + "</b> " + transcription + " - " + translation;
+	}
+
 }
