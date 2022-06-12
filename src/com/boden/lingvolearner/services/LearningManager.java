@@ -22,7 +22,6 @@ public class LearningManager {
 	private int currentCartdNum;
 
 	private int rozmir_mas, krok_povtory, k_zal_sliv;
-	private int repeatCount;
 	private int kilk[] = new int[10];
 	private String[] spisok = new String[WORDS_IN_CYCLE];
 	private Random rnd = new Random();
@@ -33,7 +32,6 @@ public class LearningManager {
 		rozmir_mas = allWordCards.size();
 		createStagesMap();
 		currentStage = Stage.FOREIGN_TO_NATIVE;
-		repeatCount = getSettingsHolder().getRepeatCount();
 	}
 
 	private void createStagesMap() {
@@ -71,7 +69,7 @@ public class LearningManager {
 	}
 
 	public void startNewStage() {
-		krok_povtory = repeatCount;
+		krok_povtory = getSettingsHolder().getRepeatCount();
 		resetCycle();
 		changeCurrentCardNum();
 		updateWordChoices();
@@ -82,6 +80,7 @@ public class LearningManager {
 
 	public boolean startNextStage() {
 		boolean startedFromBegining = false;
+		boolean newPortionStarted = false;
 		if (currentStage.isLast()) {
 			int startFrom = ContextHolder.getSettingsHolder().getStartFromNumber();
 			if (startFrom == rozmir_mas - WORDS_IN_CYCLE) {
@@ -91,28 +90,33 @@ public class LearningManager {
 				startFrom = Math.min(startFrom + WORDS_IN_CYCLE, rozmir_mas - WORDS_IN_CYCLE);
 			}
 			ContextHolder.getSettingsHolder().updateStartNumber(startFrom);
-			ContextHolder.getUiUpdator(currentStage).updateUiOnNewPortionStarted();
+			newPortionStarted = true;
 		}
 		if (currentStage.getNext().isLast()) {
 			ContextHolder.getUiUpdator(currentStage).createNewActivity();
 		}
 		currentStage = currentStage.getNext();
 		startNewStage();
+		if (newPortionStarted && Objects.nonNull(ContextHolder.getUiUpdator(currentStage))) {
+			ContextHolder.getUiUpdator(currentStage).updateUiOnNewPortionStarted();
+		}
 		return startedFromBegining;
 	}
 
 	public void startPreviousStage() {
+		boolean newPortionStarted = false;
 		if (currentStage.isFirst()) {
 			int startFrom = ContextHolder.getSettingsHolder().getStartFromNumber();
 			startFrom = Math.max(startFrom - WORDS_IN_CYCLE, 0);
 			ContextHolder.getSettingsHolder().updateStartNumber(startFrom);
-			ContextHolder.getUiUpdator(currentStage).updateUiOnNewPortionStarted();
-		}
-		if (currentStage.isFirst()) {
+			newPortionStarted = true;
 			ContextHolder.getUiUpdator(currentStage).createNewActivity();
 		}
 		currentStage = currentStage.getPrevious();
 		startNewStage();
+		if (newPortionStarted && Objects.nonNull(ContextHolder.getUiUpdator(currentStage))) {
+			ContextHolder.getUiUpdator(currentStage).updateUiOnNewPortionStarted();
+		}
 	}
 
 	public boolean checkAnswer(String answer) {
