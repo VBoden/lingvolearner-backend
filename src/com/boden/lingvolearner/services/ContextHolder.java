@@ -81,4 +81,8 @@ public class ContextHolder {
 		return getInstance().mediaFilesPlayer;
 	}
 
+	public static List<WordCard> getAllWordCards() {
+		return getLearningManager().getAllWordCards();
+	}
+
 }

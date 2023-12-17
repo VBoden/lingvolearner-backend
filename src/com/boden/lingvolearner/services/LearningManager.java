@@ -93,7 +93,7 @@ public class LearningManager {
 			newPortionStarted = true;
 		}
 		if (currentStage.getNext().isLast()) {
-			ContextHolder.getUiUpdator(currentStage).createNewActivity();
+			ContextHolder.getUiUpdator(currentStage.getNext()).createNewActivity();
 		}
 		currentStage = currentStage.getNext();
 		startNewStage();
@@ -110,7 +110,7 @@ public class LearningManager {
 			startFrom = Math.max(startFrom - WORDS_IN_CYCLE, 0);
 			ContextHolder.getSettingsHolder().updateStartNumber(startFrom);
 			newPortionStarted = true;
-			ContextHolder.getUiUpdator(currentStage).createNewActivity();
+			ContextHolder.getUiUpdator(currentStage.getPrevious()).createNewActivity();
 		}
 		currentStage = currentStage.getPrevious();
 		startNewStage();
@@ -141,7 +141,7 @@ public class LearningManager {
 				ContextHolder.getUiUpdator(currentStage).updateWord();
 			} else {
 				if (currentStage.getNext().isLast()) {
-					ContextHolder.getUiUpdator(currentStage).createNewActivity();
+					ContextHolder.getUiUpdator(currentStage.getNext()).createNewActivity();
 				}
 				ContextHolder.getUiUpdator(currentStage).updateOnStageEnd();
 				startNextStage();
@@ -202,6 +202,10 @@ public class LearningManager {
 
 	public WordCard getWordCard(int index) {
 		return allWordCards.get(index);
+	}
+
+	public List<WordCard> getAllWordCards() {
+		return allWordCards;
 	}
 
 	public boolean hasPreviousStep() {
