@@ -13,7 +13,7 @@ import com.boden.lingvolearner.pojo.WordCard;
 public class LearningManager {
 
 	private static final int SLEEP_TIME = 900;
-	private static final int WORDS_IN_CYCLE = 10;
+	public static final int WORDS_IN_CYCLE = 10;
 	private Stage currentStage;
 	private Map<Stage, AbstractStrategy> stagesStrategies;
 	private WordSpeaker speaker;
@@ -119,9 +119,9 @@ public class LearningManager {
 		}
 	}
 
-	public boolean checkAnswer(String answer) {
+	public void checkAnswer(String answer) {
 		int startFrom = ContextHolder.getSettingsHolder().getStartFromNumber();
-		if (answer.equals(getCurrentStrategy().getWordToCheck(getCurrentCard()))) {
+		if (answer.equals(getWordAnswer())) {
 			if (!getCurrentStrategy().needPlayOnClick()) {
 				speakCurrentWord();
 				try {
@@ -149,9 +149,8 @@ public class LearningManager {
 		} else {
 			k_zal_sliv++;
 			kilk[currentCartdNum - startFrom]--;
-			return false;
+			ContextHolder.getUiUpdator(currentStage).showHint(getWordToDisplay(), getWordAnswer());
 		}
-		return true;
 	}
 
 	private void changeCurrentCardNum() {

@@ -10,4 +10,6 @@ public interface UiUpdator {
 	void updateOnStageEnd();
 
 	void createNewActivity();
+
+	void showHint(String word, String answer);
 }
