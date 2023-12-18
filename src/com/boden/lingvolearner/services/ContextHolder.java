@@ -19,6 +19,8 @@ public class ContextHolder {
 	private WordSpeaker wordSpeaker;
 	private WordPlayer player;
 	private MediaFilesPlayer mediaFilesPlayer;
+	private String[] categories;
+	private String[] dictionaries;
 
 	private ContextHolder() {
 		wordSpeaker = new WordSpeaker();
@@ -83,6 +85,22 @@ public class ContextHolder {
 
 	public static List<WordCard> getAllWordCards() {
 		return getLearningManager().getAllWordCards();
+	}
+
+	public String[] getCategories() {
+		return categories;
+	}
+
+	public void setCategories(String[] categories) {
+		this.categories = categories;
+	}
+
+	public String[] getDictionaries() {
+		return dictionaries;
+	}
+
+	public void setDictionaries(String[] dictionaries) {
+		this.dictionaries = dictionaries;
 	}
 
 }

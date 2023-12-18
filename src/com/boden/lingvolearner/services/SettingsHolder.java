@@ -13,6 +13,8 @@ public class SettingsHolder {
 	public static final String USE_TTS_TO_SAY = "useTtsToSay";
 	public static final String USED_TTS = "usedTTS";
 	public static final String USE_FILES_TO_SAY = "useFilesToSay";
+	public static final String CATEGORIES_DISPLAY_SELECTED = "categoriesDisplaySelected";
+	public static final String SHUFFLE_WORDS = "shuffleWords";
 	public static final String PATH_TO_SOUND_FILES = "pathToSoundFiles";
 	public static final String LANGUAGE = "ttsLanguage";
 
@@ -25,6 +27,8 @@ public class SettingsHolder {
 	private boolean useFilesToSay;
 	private boolean useTtsToSay;
 	private String pathToSoundFiles;
+	private boolean categoriesDisplaySelected;
+	private boolean shuffleWords;
 
 	private String language;
 	private Dict dict;
@@ -36,14 +40,16 @@ public class SettingsHolder {
 	}
 
 	private void init() {
-		textSize = userPrefs.getFloat(TEXT_SIZE, 0);
-		textPadding = userPrefs.getInt(TEXT_PADDING, 0);
+		textSize = userPrefs.getFloat(TEXT_SIZE, 20);
+		textPadding = userPrefs.getInt(TEXT_PADDING, 10);
 		repeatCount = userPrefs.getInt(REPEAT_COUNT, 5);
 		language = userPrefs.getString(LANGUAGE, Locale.US.getLanguage());
 		useTtsToSay = userPrefs.getBoolean(USE_TTS_TO_SAY, true);
 		usedTts = userPrefs.getInt(USED_TTS, 1);
 		useFilesToSay = userPrefs.getBoolean(USE_FILES_TO_SAY, true);
 		pathToSoundFiles = userPrefs.getString(PATH_TO_SOUND_FILES, "");
+		categoriesDisplaySelected = userPrefs.getBoolean(CATEGORIES_DISPLAY_SELECTED, true);
+		shuffleWords = userPrefs.getBoolean(SHUFFLE_WORDS, true);
 
 		getDictsFromSettings();
 		if (userPrefs.contains(DICTIONARIES) == true) {
@@ -88,6 +94,8 @@ public class SettingsHolder {
 			startFromNumber = listOfDicts.get(index).getBeginFrom();
 			newDict.setBeginFrom(startFromNumber);
 			listOfDicts.remove(index);
+		}else{
+			startFromNumber = 0;
 		}
 		listOfDicts.add(0, newDict);
 		saveChangedDictsList();
@@ -193,6 +201,10 @@ public class SettingsHolder {
 		return startFromNumber;
 	}
 
+	public void setStartFromNumber(int startFrom) {
+		this.startFromNumber = startFrom;
+	}
+
 	public int getRepeatCount() {
 		return repeatCount;
 	}
@@ -226,6 +238,24 @@ public class SettingsHolder {
 	public void setUsedTts(int usedTts) {
 		this.usedTts = usedTts;
 		userPrefs.saveInt(USED_TTS, usedTts);
+	}
+
+	public boolean isCategoriesDisplaySelected() {
+		return categoriesDisplaySelected;
+	}
+
+	public void setCategoriesDisplaySelected(boolean isChecked) {
+		this.categoriesDisplaySelected = isChecked;
+		userPrefs.saveBoolean(CATEGORIES_DISPLAY_SELECTED, isChecked);
+	}
+
+	public boolean isShuffleWords() {
+		return shuffleWords;
+	}
+
+	public void setShuffleWords(boolean shuffleWords) {
+		this.shuffleWords = shuffleWords;
+		userPrefs.saveBoolean(SHUFFLE_WORDS, shuffleWords);
 	}
 
 }
